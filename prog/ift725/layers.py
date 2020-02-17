@@ -69,7 +69,10 @@ def backward_fully_connected(dout, cache):
     # TODO: Implémentez la rétropropagation pour une couche pleinement          #
     #  connectée.                                                               #
     #############################################################################
-
+    inlineX = np.array([a.flatten() for a in x])
+    dx = np.transpose(w@dout.T).reshape(x.shape)
+    dw = np.transpose(dout.T@inlineX)
+    db = np.sum(dout, axis=0, keepdims=False)
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
