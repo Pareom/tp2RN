@@ -1,0 +1,2 @@
+# Code adapté de projets académiques de la professeur Fei Fei Li et de ses étudiants Andrej Karpathy, Justin Johnson et autres.
+# Version finale rédigée par Carl Lemaire, Vincent Ducharme et Pierre-Marc Jodoin

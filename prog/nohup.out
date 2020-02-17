@@ -1,0 +1,30 @@
+[I 16:53:46.978 NotebookApp] Writing notebook server cookie secret to /home/yannis/.local/share/jupyter/runtime/notebook_cookie_secret
+[I 16:53:48.295 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2/prog
+[I 16:53:48.295 NotebookApp] The Jupyter Notebook is running at:
+[I 16:53:48.295 NotebookApp] http://localhost:8888/?token=bc453766c6167fad30a7cfda334f159e69b6dcbe5205753e
+[I 16:53:48.295 NotebookApp]  or http://127.0.0.1:8888/?token=bc453766c6167fad30a7cfda334f159e69b6dcbe5205753e
+[I 16:53:48.296 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 16:53:48.364 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-3512-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=bc453766c6167fad30a7cfda334f159e69b6dcbe5205753e
+     or http://127.0.0.1:8888/?token=bc453766c6167fad30a7cfda334f159e69b6dcbe5205753e
+[I 16:53:57.941 NotebookApp] Writing notebook-signing key to /home/yannis/.local/share/jupyter/notebook_secret
+[W 16:53:57.945 NotebookApp] Notebook FCNet.ipynb is not trusted
+[I 16:53:59.385 NotebookApp] Kernel started: 69e1b044-fde4-4d69-ade4-0cef3b57fa7a
+[I 16:55:59.334 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:09:38.382 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:09:59.338 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:15:59.340 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:17:59.339 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:19:59.339 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:39:59.339 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:42:33.860 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:43:59.342 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:45:59.340 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:11:33.820 NotebookApp] Starting buffering for 69e1b044-fde4-4d69-ade4-0cef3b57fa7a:721a3f139b9048e48674bb19014f6663
+[C 18:12:04.000 NotebookApp] received signal 15, stopping
+[I 18:12:04.000 NotebookApp] Shutting down 1 kernel
+[I 18:12:04.101 NotebookApp] Kernel shutdown: 69e1b044-fde4-4d69-ade4-0cef3b57fa7a
