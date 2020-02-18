@@ -3,9 +3,7 @@
 
 import numpy as np
 
-from ift725.layers import *
-from ift725.layer_combo import *
-
+from ..layers import *
 
 class TwoLayerNeuralNet(object):
     """
@@ -54,8 +52,10 @@ class TwoLayerNeuralNet(object):
         # self.params['b1'] = ...                                                  #
         # ...                                                                      #
         ############################################################################
-
-
+        self.params['b1']=np.zeros(input_dim)
+        self.params['b2']=np.zeros(hidden_dim)
+        self.params['W1']=np.random.normal(0, weight_scale, (input_dim,hidden_dim))
+        self.params['W2']=np.random.normal(0, weight_scale, (hidden_dim, num_classes))
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -91,7 +91,9 @@ class TwoLayerNeuralNet(object):
         #  deux couches.                                                           #
         #  NOTES: score est la sortie du réseau *SANS SOFTMAX*                     #
         ############################################################################
-
+        a, fc_cache = forward_fully_connected(X, self.params['W1'], self.params['b1'])
+        out, relu_cache = forward_relu(a)
+        scores, fc_cache2 = forward_fully_connected(a, self.params['W2'], self.params['b2'])
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -123,6 +125,13 @@ class TwoLayerNeuralNet(object):
         # Note, les gradients doivent être stochez dans le dictionnaire `grads`    #
         #       du type grads['W1']=...                                            #
         ############################################################################
+        loss, dx2 = softmax_loss(scores, y)
+        loss += self.reg * (np.linalg.norm(self.params["W2"])**2 + np.linalg.norm(self.params["W1"])**2 + np.linalg.norm(self.params["b2"])**2 + np.linalg.norm(self.params["b1"])**2)
+        dx, grads["W2"], grads["b2"] = backward_fully_connected(dx2, fc_cache2)
+        da = backward_relu(dx, relu_cache)
+        _, grads["W1"], grads["b1"] = backward_fully_connected(da, fc_cache)
+        grads["W2"] += self.reg * 0.5 * np.linalg.norm(self.params["W2"])**2
+        grads["W1"] += self.reg * 0.5 * np.linalg.norm(self.params["W1"])**2
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################

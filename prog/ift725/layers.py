@@ -94,7 +94,8 @@ def forward_relu(x):
     #############################################################################
     # TODO: Implémentez la propagation pour une couche ReLU.                    #
     #############################################################################
-
+    out = np.array([a.flatten() for a in x])
+    out[out<0] = 0
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -117,7 +118,7 @@ def backward_relu(dout, cache):
     #############################################################################
     # TODO: Implémentez la rétropropagation pour une couche ReLU.               #
     #############################################################################
-
+    dx=np.multiply(dout,cache)
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -557,6 +558,12 @@ def svm_loss(x, y):
     #       régularisation                                                      #
     #############################################################################
 
+    hinge = np.maximum(0, 1 + x.T - x[np.arange(N), y]).T
+    hinge[np.arange(len(y)), y] = 0
+    loss = np.sum(hinge)
+    """hinge[hinge>0] = 1
+    hinge[np.arange(len(y)), y] = -1 * np.sum(hinge, axis=1)
+    dx = hinge"""
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -565,7 +572,7 @@ def svm_loss(x, y):
     dx = np.zeros_like(x)
     dx[margins > 0] = 1
     dx[np.arange(N), y] -= num_pos
-    dx /= N
+    dx /= 1#N  Etrange...
     return loss, dx
 
 
@@ -583,17 +590,19 @@ def softmax_loss(x, y, scale=1.0):
     - loss: Scalar giving the loss
     - dx: Gradient of the loss with respect to x
     """
-
+    N=len(y)
     #############################################################################
     # TODO: La perte softmax en vous inspirant du tp1 mais sans régularisation  #
     #                                                                           #
     #############################################################################
-
+    probs = np.exp(x)
+    probs = probs/np.sum(probs, axis=1, keepdims=True)
+    loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(x)
+    #dx = probs@x/len(x)
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
-
     dx = probs.copy()
     dx[np.arange(N), y] -= 1
     dx /= N
