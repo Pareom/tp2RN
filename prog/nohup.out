@@ -28,3 +28,290 @@
 [C 18:12:04.000 NotebookApp] received signal 15, stopping
 [I 18:12:04.000 NotebookApp] Shutting down 1 kernel
 [I 18:12:04.101 NotebookApp] Kernel shutdown: 69e1b044-fde4-4d69-ade4-0cef3b57fa7a
+[I 14:54:05.247 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 14:54:05.247 NotebookApp] The Jupyter Notebook is running at:
+[I 14:54:05.248 NotebookApp] http://localhost:8888/?token=846b08ad8fc2906e1fdaceb696c080650d717ac691b0e266
+[I 14:54:05.248 NotebookApp]  or http://127.0.0.1:8888/?token=846b08ad8fc2906e1fdaceb696c080650d717ac691b0e266
+[I 14:54:05.248 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 14:54:05.260 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-6688-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=846b08ad8fc2906e1fdaceb696c080650d717ac691b0e266
+     or http://127.0.0.1:8888/?token=846b08ad8fc2906e1fdaceb696c080650d717ac691b0e266
+[I 14:54:08.867 NotebookApp] Kernel started: a0c82691-5f09-4243-ae75-14d85424972d
+[I 14:55:10.102 NotebookApp] Starting buffering for a0c82691-5f09-4243-ae75-14d85424972d:0efebe4d23e945dba001314ae67da963
+[I 14:55:41.733 NotebookApp] Saving file at /FCNet.ipynb
+[I 14:55:45.378 NotebookApp] Saving file at /FCNet.ipynb
+[I 14:57:12.029 NotebookApp] Saving file at /FCNet.ipynb
+OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
+Gtk-Message: 14:59:02.326: Failed to load module "appmenu-gtk-module"
+[I 15:07:12.035 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:09:12.022 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:11:12.035 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:13:12.035 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:17:12.040 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:19:12.034 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:21:12.034 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:23:12.307 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:23:46.920 NotebookApp] Saving file at /FCNet.ipynb
+2020-02-17 15:25:40,451 [1600678]   WARN - ckaging.InstalledPackagesPanel - Cannot fetch the latest version of the installed package pkg-resources 
+com.intellij.util.io.HttpRequests$HttpStatusException: Request failed with status code 404. Status=404, Url=https://pypi.python.org/pypi/pkg-resources/json
+	at com.intellij.util.io.HttpRequests.throwHttpStatusError(HttpRequests.java:645)
+	at com.intellij.util.io.HttpRequests.openConnection(HttpRequests.java:626)
+	at com.intellij.util.io.HttpRequests.access$300(HttpRequests.java:56)
+	at com.intellij.util.io.HttpRequests$RequestImpl.getConnection(HttpRequests.java:376)
+	at com.intellij.util.io.HttpRequests$RequestImpl.getInputStream(HttpRequests.java:385)
+	at com.intellij.util.io.HttpRequests$RequestImpl.getReader(HttpRequests.java:403)
+	at com.intellij.util.io.HttpRequests$RequestImpl.getReader(HttpRequests.java:396)
+	at com.jetbrains.python.packaging.PyPIPackageUtil$3.lambda$load$0(PyPIPackageUtil.java:108)
+	at com.intellij.util.io.HttpRequests.doProcess(HttpRequests.java:518)
+	at com.intellij.util.io.HttpRequests.process(HttpRequests.java:500)
+	at com.intellij.util.io.HttpRequests.access$100(HttpRequests.java:56)
+	at com.intellij.util.io.HttpRequests$RequestBuilderImpl.connect(HttpRequests.java:350)
+	at com.jetbrains.python.packaging.PyPIPackageUtil$3.load(PyPIPackageUtil.java:108)
+	at com.jetbrains.python.packaging.PyPIPackageUtil$3.load(PyPIPackageUtil.java:102)
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3529)
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2278)
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2155)
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2045)
+	at com.google.common.cache.LocalCache.get(LocalCache.java:3953)
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:3976)
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:4960)
+	at com.jetbrains.python.packaging.PyPIPackageUtil.getCachedValueOrRethrowIO(PyPIPackageUtil.java:226)
+	at com.jetbrains.python.packaging.PyPIPackageUtil.refreshAndGetPackageDetailsFromPyPI(PyPIPackageUtil.java:174)
+	at com.jetbrains.python.packaging.PyPIPackageUtil.getPackageVersionsFromPyPI(PyPIPackageUtil.java:201)
+	at com.jetbrains.python.packaging.PyPIPackageUtil.getLatestPackageVersionFromPyPI(PyPIPackageUtil.java:210)
+	at com.jetbrains.python.packaging.PyPIPackageUtil.fetchLatestPackageVersion(PyPIPackageUtil.java:245)
+	at com.jetbrains.python.packaging.ui.PyPackageManagementService.lambda$fetchLatestVersion$1(PyPackageManagementService.java:389)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at com.intellij.util.concurrency.BoundedTaskExecutor.doRun(BoundedTaskExecutor.java:222)
+	at com.intellij.util.concurrency.BoundedTaskExecutor.access$200(BoundedTaskExecutor.java:30)
+	at com.intellij.util.concurrency.BoundedTaskExecutor$1.execute(BoundedTaskExecutor.java:201)
+	at com.intellij.util.ConcurrencyUtil.runUnderThreadName(ConcurrencyUtil.java:221)
+	at com.intellij.util.concurrency.BoundedTaskExecutor$1.run(BoundedTaskExecutor.java:190)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+2020-02-17 15:25:41,386 [1601613]   WARN - .skeletons.PySkeletonRefresher - Some skeletons failed to generate 
+2020-02-17 15:25:41,388 [1601615]   WARN - .skeletons.PySkeletonRefresher - matplotlib.backends._tkagg 
+2020-02-17 15:25:41,388 [1601615]   WARN - .skeletons.PySkeletonRefresher - scipy.optimize._lsap_ 
+[I 15:27:12.034 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:29:12.295 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:37:12.033 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:39:12.033 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:39:38.498 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:41:12.022 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:43:12.294 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:44:53.224 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:45:12.051 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:46:47.077 NotebookApp] Starting buffering for a0c82691-5f09-4243-ae75-14d85424972d:8a9a0d3c78e9486c86cd653bf93f20d6
+[C 15:47:19.163 NotebookApp] received signal 15, stopping
+[I 15:47:19.163 NotebookApp] Shutting down 1 kernel
+[I 15:47:19.264 NotebookApp] Kernel shutdown: a0c82691-5f09-4243-ae75-14d85424972d
+[I 17:22:22.210 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 17:22:22.217 NotebookApp] The Jupyter Notebook is running at:
+[I 17:22:22.217 NotebookApp] http://localhost:8888/?token=ff144cd018bc24a96bdb3aa99f0971050ba6dc97af8d9324
+[I 17:22:22.217 NotebookApp]  or http://127.0.0.1:8888/?token=ff144cd018bc24a96bdb3aa99f0971050ba6dc97af8d9324
+[I 17:22:22.217 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 17:22:22.260 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-1774-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=ff144cd018bc24a96bdb3aa99f0971050ba6dc97af8d9324
+     or http://127.0.0.1:8888/?token=ff144cd018bc24a96bdb3aa99f0971050ba6dc97af8d9324
+[I 17:22:40.462 NotebookApp] Kernel started: ec05d9a4-951b-4709-8a22-f7cc213931aa
+[I 17:24:40.343 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:28:40.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:30:40.330 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:32:40.378 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:34:40.371 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:35:09.812 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:36:40.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:36:44.086 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:37:14.718 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:38:40.380 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:40:40.361 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:44:25.578 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:44:40.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:46:06.168 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:46:40.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:48:40.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:52:40.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:56:40.352 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:14:40.678 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:20:40.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:22:40.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:26:10.370 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:26:40.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:27:24.808 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:28:28.682 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:28:40.368 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:30:40.653 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:32:40.347 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:04:31.348 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:08:31.347 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:10:31.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:10:59.356 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:12:31.346 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:14:31.337 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:16:31.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:18:31.351 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:20:31.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:26:31.347 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:28:31.347 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:30:31.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:34:31.333 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:36:31.652 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:44:31.345 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:33:30.048 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:36:45.637 NotebookApp] Starting buffering for ec05d9a4-951b-4709-8a22-f7cc213931aa:56b89b6d8fd14396839ecc77639799e0
+[I 20:36:46.047 NotebookApp] Kernel restarted: ec05d9a4-951b-4709-8a22-f7cc213931aa
+[I 20:36:46.517 NotebookApp] Restoring connection for ec05d9a4-951b-4709-8a22-f7cc213931aa:56b89b6d8fd14396839ecc77639799e0
+[I 20:36:46.517 NotebookApp] Replaying 6 buffered messages
+[I 20:37:27.197 NotebookApp] Starting buffering for ec05d9a4-951b-4709-8a22-f7cc213931aa:56b89b6d8fd14396839ecc77639799e0
+[C 20:37:44.127 NotebookApp] received signal 15, stopping
+[I 20:37:44.128 NotebookApp] Shutting down 1 kernel
+[I 20:37:44.429 NotebookApp] Kernel shutdown: ec05d9a4-951b-4709-8a22-f7cc213931aa
+[I 20:37:59.722 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 20:37:59.722 NotebookApp] The Jupyter Notebook is running at:
+[I 20:37:59.722 NotebookApp] http://localhost:8888/?token=4679dbec2b4df260583e437c882b77db29e05c1fa6b8a577
+[I 20:37:59.723 NotebookApp]  or http://127.0.0.1:8888/?token=4679dbec2b4df260583e437c882b77db29e05c1fa6b8a577
+[I 20:37:59.723 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:37:59.736 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-5008-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=4679dbec2b4df260583e437c882b77db29e05c1fa6b8a577
+     or http://127.0.0.1:8888/?token=4679dbec2b4df260583e437c882b77db29e05c1fa6b8a577
+[I 20:38:03.236 NotebookApp] Kernel started: 6ebca5b7-f27f-4389-ae09-324e1e14bcc8
+[I 20:39:33.208 NotebookApp] Starting buffering for 6ebca5b7-f27f-4389-ae09-324e1e14bcc8:1e2af86e0eda43eb8e17ae9614032826
+[I 20:39:33.621 NotebookApp] Kernel restarted: 6ebca5b7-f27f-4389-ae09-324e1e14bcc8
+[I 20:39:34.071 NotebookApp] Restoring connection for 6ebca5b7-f27f-4389-ae09-324e1e14bcc8:1e2af86e0eda43eb8e17ae9614032826
+[I 20:39:34.071 NotebookApp] Replaying 6 buffered messages
+[I 20:40:03.239 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:44:48.158 NotebookApp] Starting buffering for 6ebca5b7-f27f-4389-ae09-324e1e14bcc8:1e2af86e0eda43eb8e17ae9614032826
+[C 20:45:21.351 NotebookApp] received signal 15, stopping
+[I 20:45:21.352 NotebookApp] Shutting down 1 kernel
+[I 20:45:21.452 NotebookApp] Kernel shutdown: 6ebca5b7-f27f-4389-ae09-324e1e14bcc8
+[I 20:50:39.873 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 20:50:39.884 NotebookApp] The Jupyter Notebook is running at:
+[I 20:50:39.884 NotebookApp] http://localhost:8888/?token=92bb6a8438eb900c787144ea943b1e4958e8a495bcaf168a
+[I 20:50:39.884 NotebookApp]  or http://127.0.0.1:8888/?token=92bb6a8438eb900c787144ea943b1e4958e8a495bcaf168a
+[I 20:50:39.885 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:50:39.941 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-1342-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=92bb6a8438eb900c787144ea943b1e4958e8a495bcaf168a
+     or http://127.0.0.1:8888/?token=92bb6a8438eb900c787144ea943b1e4958e8a495bcaf168a
+[I 20:50:58.089 NotebookApp] Kernel started: 3f65f064-1dfd-4fc7-bdba-060b6ebeb5e6
+[I 20:52:58.523 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:53:49.886 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:54:19.552 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:54:33.132 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:54:46.573 NotebookApp] Saving file at /FCNet.ipynb
+[I 20:54:57.999 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:00:58.004 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:02:57.999 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:04:17.123 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:04:58.260 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:10:58.534 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:11:32.391 NotebookApp] Starting buffering for 3f65f064-1dfd-4fc7-bdba-060b6ebeb5e6:f90a6d41d6d6475c908edb5a699b3a52
+[I 21:11:32.798 NotebookApp] Kernel restarted: 3f65f064-1dfd-4fc7-bdba-060b6ebeb5e6
+[I 21:11:33.402 NotebookApp] Restoring connection for 3f65f064-1dfd-4fc7-bdba-060b6ebeb5e6:f90a6d41d6d6475c908edb5a699b3a52
+[I 21:11:33.402 NotebookApp] Replaying 6 buffered messages
+[I 21:12:58.042 NotebookApp] Saving file at /FCNet.ipynb
+[I 21:22:57.999 NotebookApp] Saving file at /FCNet.ipynb
+[I 14:54:06.884 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 14:54:06.897 NotebookApp] The Jupyter Notebook is running at:
+[I 14:54:06.897 NotebookApp] http://localhost:8888/?token=0e0b531df84720a57650c3b1701ba0d5575282e52965a3a1
+[I 14:54:06.897 NotebookApp]  or http://127.0.0.1:8888/?token=0e0b531df84720a57650c3b1701ba0d5575282e52965a3a1
+[I 14:54:06.897 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 14:54:06.960 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-1525-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=0e0b531df84720a57650c3b1701ba0d5575282e52965a3a1
+     or http://127.0.0.1:8888/?token=0e0b531df84720a57650c3b1701ba0d5575282e52965a3a1
+[I 14:54:25.420 NotebookApp] Kernel started: 5e2c082a-dc95-42a5-9f8a-821a0dc5006d
+[I 15:08:17.745 NotebookApp] Starting buffering for 5e2c082a-dc95-42a5-9f8a-821a0dc5006d:b38d8697dd534a7c8f2ac9c2e55d7c87
+[I 15:08:18.054 NotebookApp] Kernel restarted: 5e2c082a-dc95-42a5-9f8a-821a0dc5006d
+[I 15:08:18.545 NotebookApp] Restoring connection for 5e2c082a-dc95-42a5-9f8a-821a0dc5006d:b38d8697dd534a7c8f2ac9c2e55d7c87
+[I 15:08:18.545 NotebookApp] Replaying 6 buffered messages
+[I 15:09:58.706 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:15:58.709 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:17:58.708 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:18:47.177 NotebookApp] Starting buffering for 5e2c082a-dc95-42a5-9f8a-821a0dc5006d:b38d8697dd534a7c8f2ac9c2e55d7c87
+[C 15:18:59.809 NotebookApp] received signal 15, stopping
+[I 15:18:59.810 NotebookApp] Shutting down 1 kernel
+[I 15:19:00.111 NotebookApp] Kernel shutdown: 5e2c082a-dc95-42a5-9f8a-821a0dc5006d
+[I 15:19:09.048 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 15:19:09.049 NotebookApp] The Jupyter Notebook is running at:
+[I 15:19:09.049 NotebookApp] http://localhost:8888/?token=1dea8e78843e8fda9b2adb6dd2162ed8d49efad3cb52e683
+[I 15:19:09.049 NotebookApp]  or http://127.0.0.1:8888/?token=1dea8e78843e8fda9b2adb6dd2162ed8d49efad3cb52e683
+[I 15:19:09.049 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:19:09.060 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-2949-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=1dea8e78843e8fda9b2adb6dd2162ed8d49efad3cb52e683
+     or http://127.0.0.1:8888/?token=1dea8e78843e8fda9b2adb6dd2162ed8d49efad3cb52e683
+[I 15:19:13.030 NotebookApp] Kernel started: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 15:19:13.875 NotebookApp] Kernel interrupted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 15:19:15.580 NotebookApp] Kernel interrupted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 15:19:19.429 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 15:19:19.844 NotebookApp] Kernel restarted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 15:19:20.284 NotebookApp] Restoring connection for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 15:19:20.284 NotebookApp] Replaying 6 buffered messages
+[I 15:21:13.037 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:23:13.041 NotebookApp] Saving file at /FCNet.ipynb
+[I 15:25:13.037 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:03:45.477 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:07:45.467 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:45:45.472 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:49:45.483 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:51:45.478 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:53:45.479 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:55:45.481 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:57:45.477 NotebookApp] Saving file at /FCNet.ipynb
+[I 16:59:45.479 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:09:45.479 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:11:45.468 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:13:45.480 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:15:45.573 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:16:37.630 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:17:18.006 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:17:50.766 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:18:00.752 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:18:08.760 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:18:09.518 NotebookApp] Kernel restarted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 17:18:12.516 NotebookApp] Restoring connection for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:18:12.516 NotebookApp] Replaying 6 buffered messages
+[I 17:19:45.547 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:21:45.483 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:22:44.541 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:23:45.478 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:29:07.472 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:29:08.088 NotebookApp] Kernel restarted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 17:29:11.022 NotebookApp] Restoring connection for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:29:11.022 NotebookApp] Replaying 6 buffered messages
+[I 17:29:45.539 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:31:15.164 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:31:15.691 NotebookApp] Kernel restarted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 17:31:19.051 NotebookApp] Restoring connection for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 17:31:19.052 NotebookApp] Replaying 6 buffered messages
+[I 17:31:45.539 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:32:48.738 NotebookApp] Kernel interrupted: 1eeb4225-58c0-46f1-8051-e86a513aaaee
+[I 17:33:45.466 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:51:35.150 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:51:35.355 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:51:36.658 NotebookApp] Saving file at /FCNet.ipynb
+[I 17:51:39.285 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e

@@ -52,8 +52,8 @@ class TwoLayerNeuralNet(object):
         # self.params['b1'] = ...                                                  #
         # ...                                                                      #
         ############################################################################
-        self.params['b1']=np.zeros(input_dim)
-        self.params['b2']=np.zeros(hidden_dim)
+        self.params['b1']=np.zeros(hidden_dim)
+        self.params['b2']=np.zeros(num_classes)
         self.params['W1']=np.random.normal(0, weight_scale, (input_dim,hidden_dim))
         self.params['W2']=np.random.normal(0, weight_scale, (hidden_dim, num_classes))
         ############################################################################
@@ -126,12 +126,17 @@ class TwoLayerNeuralNet(object):
         #       du type grads['W1']=...                                            #
         ############################################################################
         loss, dx2 = softmax_loss(scores, y)
-        loss += self.reg * (np.linalg.norm(self.params["W2"])**2 + np.linalg.norm(self.params["W1"])**2 + np.linalg.norm(self.params["b2"])**2 + np.linalg.norm(self.params["b1"])**2)
+        loss += self.reg * (np.linalg.norm(self.params["W2"])**2
+                            + np.linalg.norm(self.params["W1"])**2
+                            + np.linalg.norm(self.params["b2"])**2
+                            + np.linalg.norm(self.params["b1"])**2)
         dx, grads["W2"], grads["b2"] = backward_fully_connected(dx2, fc_cache2)
         da = backward_relu(dx, relu_cache)
         _, grads["W1"], grads["b1"] = backward_fully_connected(da, fc_cache)
-        grads["W2"] += self.reg * 0.5 * np.linalg.norm(self.params["W2"])**2
-        grads["W1"] += self.reg * 0.5 * np.linalg.norm(self.params["W1"])**2
+        grads["W2"] += self.reg * 2 * self.params["W2"]
+        grads["W1"] += self.reg * 2 * self.params["W1"]
+        grads["b2"] += self.reg * 2 * self.params["b2"]
+        grads["b1"] += self.reg * 2 * self.params["b1"]
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
