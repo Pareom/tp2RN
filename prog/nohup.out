@@ -315,3 +315,69 @@ com.intellij.util.io.HttpRequests$HttpStatusException: Request failed with statu
 [I 17:51:35.355 NotebookApp] Saving file at /FCNet.ipynb
 [I 17:51:36.658 NotebookApp] Saving file at /FCNet.ipynb
 [I 17:51:39.285 NotebookApp] Starting buffering for 1eeb4225-58c0-46f1-8051-e86a513aaaee:acdb7cb216604825be9aa6c0ecb29d6e
+[I 18:28:58.809 NotebookApp] The port 8888 is already in use, trying another port.
+[I 18:28:58.834 NotebookApp] Serving notebooks from local directory: /home/yannis/Documents/uds/ift725/tp2RN/prog
+[I 18:28:58.834 NotebookApp] The Jupyter Notebook is running at:
+[I 18:28:58.834 NotebookApp] http://localhost:8889/?token=e26857e686c10aff9dbd4025d571d57b75fcaabb8796ec75
+[I 18:28:58.834 NotebookApp]  or http://127.0.0.1:8889/?token=e26857e686c10aff9dbd4025d571d57b75fcaabb8796ec75
+[I 18:28:58.834 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 18:28:58.864 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/yannis/.local/share/jupyter/runtime/nbserver-7732-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8889/?token=e26857e686c10aff9dbd4025d571d57b75fcaabb8796ec75
+     or http://127.0.0.1:8889/?token=e26857e686c10aff9dbd4025d571d57b75fcaabb8796ec75
+[I 18:29:04.567 NotebookApp] Kernel started: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 18:29:44.776 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 18:29:45.187 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 18:29:45.743 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 18:29:45.743 NotebookApp] Replaying 6 buffered messages
+[I 18:31:04.525 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:35:04.553 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:37:04.539 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:39:04.534 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:41:04.525 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:48:14.123 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 18:48:14.943 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 18:48:17.307 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 18:48:17.308 NotebookApp] Replaying 3 buffered messages
+[I 18:49:04.551 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:51:04.779 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:53:04.539 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:55:04.774 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:57:04.791 NotebookApp] Saving file at /FCNet.ipynb
+[I 18:59:04.764 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:01:04.525 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:02:04.343 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:02:05.089 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 19:02:08.235 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:02:08.235 NotebookApp] Replaying 6 buffered messages
+[I 19:03:04.523 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:04:41.349 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:04:41.762 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 19:04:42.710 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:04:42.710 NotebookApp] Replaying 6 buffered messages
+[I 19:05:04.552 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:07:04.551 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:07:15.088 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:09:04.520 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:13:12.867 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:13:13.481 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 19:13:14.420 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:13:14.420 NotebookApp] Replaying 6 buffered messages
+[I 19:15:04.583 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:15:47.537 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:15:47.952 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 19:15:48.548 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:15:48.548 NotebookApp] Replaying 5 buffered messages
+[I 19:17:04.579 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:19:04.769 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:35:37.771 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:35:38.189 NotebookApp] Kernel restarted: e27c5e96-0154-472e-ba95-39f19b9b7cfe
+[I 19:35:38.685 NotebookApp] Restoring connection for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215
+[I 19:35:38.685 NotebookApp] Replaying 6 buffered messages
+[I 19:36:02.749 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:37:04.539 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:38:06.064 NotebookApp] Saving file at /FCNet.ipynb
+[I 19:38:07.082 NotebookApp] Starting buffering for e27c5e96-0154-472e-ba95-39f19b9b7cfe:45dd584539ad44d085324b0575c65215

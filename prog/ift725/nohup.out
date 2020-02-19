@@ -95,3 +95,11 @@ Gtk-Message: 14:57:21.763: Failed to load module "appmenu-gtk-module"
 2020-02-18 14:58:28,469 [  67396]   WARN - .skeletons.PySkeletonRefresher - matplotlib.backends._tkagg 
 2020-02-18 14:58:28,469 [  67396]   WARN - .skeletons.PySkeletonRefresher - scipy.optimize._lsap_ 
 2020-02-18 15:25:27,187 [1686114]   WARN - ystem.impl.ActionPopupMenuImpl - 1851ms to fill popup menu NavBar 
+OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
+Gtk-Message: 18:29:27.091: Failed to load module "appmenu-gtk-module"
+2020-02-18 18:30:22,681 [  56942]   WARN - .diagnostic.PerformanceWatcher - UI freezed for 5873ms, details saved to /home/yannis/.PyCharmCE2019.3/system/log/threadDumps-freeze-20200218-183016-PC-193.6494.30-BaseComponentAdapter.getInstanceUncached-5sec 
+2020-02-18 18:30:34,531 [  68792]   WARN - .diagnostic.PerformanceWatcher - UI freezed for 9111ms, details saved to /home/yannis/.PyCharmCE2019.3/system/log/threadDumps-freeze-20200218-183025-PC-193.6494.30-RandomAccessFile.readBytes-9sec 
+2020-02-18 18:30:57,166 [  91427]   WARN - .diagnostic.PerformanceWatcher - UI freezed for 5527ms, details saved to /home/yannis/.PyCharmCE2019.3/system/log/threadDumps-freeze-20200218-183051-PC-193.6494.30-BaseComponentAdapter.getInstanceUncached-5sec 
+2020-02-18 18:31:18,735 [ 112996]   WARN - .skeletons.PySkeletonRefresher - Some skeletons failed to generate 
+2020-02-18 18:31:18,735 [ 112996]   WARN - .skeletons.PySkeletonRefresher - matplotlib.backends._tkagg 
+2020-02-18 18:31:18,735 [ 112996]   WARN - .skeletons.PySkeletonRefresher - scipy.optimize._lsap_ 

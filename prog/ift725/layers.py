@@ -561,9 +561,6 @@ def svm_loss(x, y):
     hinge = np.maximum(0, 1 + x.T - x[np.arange(N), y]).T
     hinge[np.arange(len(y)), y] = 0
     loss = np.sum(hinge)
-    """hinge[hinge>0] = 1
-    hinge[np.arange(len(y)), y] = -1 * np.sum(hinge, axis=1)
-    dx = hinge"""
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -597,7 +594,7 @@ def softmax_loss(x, y, scale=1.0):
     #############################################################################
     probs = np.exp(x)
     probs = probs/np.sum(probs, axis=1, keepdims=True)
-    loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(x)
+    loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(y)
     #dx = probs@x/len(x)
 
     #############################################################################
