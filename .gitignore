@@ -1,0 +1,8 @@
+
+prog/ift725/__pycache__/
+
+prog/.ipynb_checkpoints/
+
+prog/ift725/classifiers/__pycache__/
+
+*.ipynb
