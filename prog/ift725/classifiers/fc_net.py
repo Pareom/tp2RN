@@ -213,6 +213,31 @@ class FullyConnectedNeuralNet(object):
         #           self.params[param_name_b] = ...                                #
         ############################################################################
 
+        for i in range(self.num_layers):
+          if(i == 0):
+            w_size = (input_dim,hidden_dims[0])
+            b_size = hidden_dims[0]
+          
+          elif(i == self.num_layers-1):
+            w_size = (hidden_dims[-1],num_classes)
+            b_size = num_classes
+
+          else:
+            w_size = (hidden_dims[i-1],hidden_dims[i])
+            b_size = hidden_dims[i]
+
+          param_name_W = self.pn('W',i+1)
+          param_name_b = self.pn('b',i+1)                                  
+          self.params[param_name_W] = np.random.normal(0, weight_scale, w_size)
+          self.params[param_name_b] = np.zeros(b_size)          
+
+          # TODO Batch norm
+          # param_name_gamma = self.pn('gamma',i+1)
+          # param_name_beta = self.pn('beta',i+1)
+          # self.params[param_name_gamma] = 1
+          # self.params[param_name_beta] = 0
+          # print(param_name_gamma)
+        
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
