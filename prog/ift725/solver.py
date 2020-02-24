@@ -6,7 +6,7 @@ import numpy as np
 try:
     import optim
 except ImportError:
-    from ..ift725 import optim
+    from ift725 import optim
 
 
 class Solver(object):
