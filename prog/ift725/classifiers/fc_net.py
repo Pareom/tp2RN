@@ -38,6 +38,7 @@ class TwoLayerNeuralNet(object):
         - reg: Scalar giving L2 regularization strength.
         """
         self.params = {}
+        self.caches = {}
         self.reg = reg
 
         ############################################################################
@@ -203,6 +204,7 @@ class FullyConnectedNeuralNet(object):
         self.num_layers = 1 + len(hidden_dims)
         self.dtype = dtype
         self.params = {}
+        self.caches = {}
 
         ############################################################################
         # TODO: Initialisez les paramètres du réseau de neuronnes en stockant      #
@@ -332,11 +334,11 @@ class FullyConnectedNeuralNet(object):
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-                fc_layer, self.params[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
+                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, self.params[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
 
         scores = fc_layer
 
@@ -379,11 +381,11 @@ class FullyConnectedNeuralNet(object):
             loss += self.reg * (np.linalg.norm(self.params[param_name_W]) ** 2 + np.linalg.norm(self.params[param_name_b]) ** 2)
 
             if layer == self.num_layers-1:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.params[param_name_cache])
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.caches[param_name_cache])
 
             #Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.params[param_name_cache])
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
 
 
             # Ajout de la régularisation L2 aux paramètres
