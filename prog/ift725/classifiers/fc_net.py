@@ -231,7 +231,7 @@ class FullyConnectedNeuralNet(object):
         #           self.params[param_name_W] = ...                                #
         #           self.params[param_name_b] = ...                                #
         ############################################################################
-        for layer in range(1, self.num_layers+1):
+        for layer in range(1, self.num_layers):
 
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
@@ -247,22 +247,22 @@ class FullyConnectedNeuralNet(object):
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
                 print('layer',layer)
-                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer]))
-                self.params[param_name_b] = np.zeros(hidden_dims[layer])
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer-1]))
+                self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
 
 
             # # Entre chaques couches cachées
-            elif layer < self.num_layers:  # len(hidden_dims)
+            elif layer < self.num_layers-1:  # len(hidden_dims)
                 print('layer',layer)
                 self.params[param_name_W] = np.random.normal(scale=weight_scale,
-                                                             size=(hidden_dims[layer-1], hidden_dims[layer]))
-                self.params[param_name_b] = np.zeros(hidden_dims[layer])
+                                                             size=(hidden_dims[layer-2], hidden_dims[layer-1]))
+                self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
 
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
                 print('layer', layer)
-                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer], num_classes))
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes))
                 self.params[param_name_b] = np.zeros(num_classes)
 
 
