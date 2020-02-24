@@ -241,19 +241,19 @@ class FullyConnectedNeuralNet(object):
             #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
             # et les décalages beta
             if self.use_batchnorm:
-                self.params[param_name_beta] = np.ones(hidden_dims[layer])
-                self.params[param_name_gamma] = np.zeros(hidden_dims[layer])
+                self.params[param_name_beta] = np.ones(hidden_dims[layer-1])
+                self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1])
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-                print('layer',layer)
+                print('layer', layer)
                 self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer-1]))
                 self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
 
 
             # # Entre chaques couches cachées
-            elif layer < self.num_layers-1:  # len(hidden_dims)
-                print('layer',layer)
+            elif layer < self.num_layers:  # len(hidden_dims)
+                print('layer', layer)
                 self.params[param_name_W] = np.random.normal(scale=weight_scale,
                                                              size=(hidden_dims[layer-2], hidden_dims[layer-1]))
                 self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
@@ -344,16 +344,12 @@ class FullyConnectedNeuralNet(object):
                 fc_layer, cache = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
                 caches.append(cache)
 
-            #  Entre chaques couches cachées
-            elif layer < self.num_layers:  # len(hidden_dims)
-                fc_layer, cache = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W],
-                                                                         self.params[param_name_b])
-                caches.append(cache)
-
             # Entre la dernière couche cachée et la couche de sortie
             else:
-                scores, cache = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                fc_layer, cache = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
                 caches.append(cache)
+
+        scores = fc_layer
 
 
 
@@ -381,6 +377,28 @@ class FullyConnectedNeuralNet(object):
         # régularisation L2 inclus un facteur de 0.5 pour simplifier l'expression  #
         # pour le gradient.                                                        #
         ############################################################################
+        # Calcul de la loss et du gradient du softmax
+        loss, dscores = softmax_loss(scores, y)
+
+        # Rétro-progagation le gradient à travers les couches pleinement connectées
+        for layer in range(self.num_layers, 1, -1):
+
+            param_name_W = self.pn('W', layer)
+            param_name_b = self.pn('b', layer)
+
+            grads[loss] += self.reg * (np.linalg.norm(self.params[param_name_W]) ** 2 + np.linalg.norm(self.params[param_name_b]) ** 2)
+
+            if layer == self.num_layers:
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, caches[layer])
+
+            #Entre la dernière couche cachée et la couche de sortie
+            else:
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, caches[layer])
+
+
+            # Ajout de la régularisation L2 aux paramètres
+            grads[param_name_W] += self.reg * 2 * self.params[param_name_W]
+            grads[param_name_b] += self.reg * 2 * self.params[param_name_b]
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
