@@ -6,3 +6,8 @@ prog/.ipynb_checkpoints/
 prog/ift725/classifiers/__pycache__/
 
 *.ipynb
+
+
+*.pyc
+
+*.out
