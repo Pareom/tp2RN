@@ -231,6 +231,41 @@ class FullyConnectedNeuralNet(object):
         #           self.params[param_name_W] = ...                                #
         #           self.params[param_name_b] = ...                                #
         ############################################################################
+        for layer in range(1, self.num_layers+1):
+
+            param_name_W = self.pn('W', layer)
+            param_name_b = self.pn('b', layer)
+            param_name_gamma = self.pn('gamma', layer)
+            param_name_beta = self.pn('beta', layer)
+
+            #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
+            # et les décalages beta
+            if self.use_batchnorm:
+                self.params[param_name_beta] = np.ones(hidden_dims[layer])
+                self.params[param_name_gamma] = np.zeros(hidden_dims[layer])
+
+            # Entre la couche d'entrée et la premiere couche cachée
+            if layer == 1:
+                print('layer',layer)
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer]))
+                self.params[param_name_b] = np.zeros(hidden_dims[layer])
+
+
+            # # Entre chaques couches cachées
+            elif layer < self.num_layers:  # len(hidden_dims)
+                print('layer',layer)
+                self.params[param_name_W] = np.random.normal(scale=weight_scale,
+                                                             size=(hidden_dims[layer-1], hidden_dims[layer]))
+                self.params[param_name_b] = np.zeros(hidden_dims[layer])
+
+
+            # Entre la dernière couche cachée et la couche de sortie
+            else:
+                print('layer', layer)
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer], num_classes))
+                self.params[param_name_b] = np.zeros(num_classes)
+
+
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
@@ -292,6 +327,35 @@ class FullyConnectedNeuralNet(object):
         # normalisation par lots; passer self.bn_params[1] pour la propagation de  #
         # la deuxième couche de normalisation par lots, etc.                       #
         ############################################################################
+
+
+        # Initialisation du tableau servant à conserver les caches des deux couches
+        caches = []
+
+        for layer in range(1, self.num_layers):
+
+            param_name_W = self.pn('W', layer)
+            param_name_b = self.pn('b', layer)
+            #param_name_gamma = self.pn('gamma', layer)
+            #param_name_beta = self.pn('beta', layer)
+
+            # Entre la couche d'entrée et la premiere couche cachée
+            if layer == 1:
+                fc_layer, cache = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
+                caches.append(cache)
+
+            #  Entre chaques couches cachées
+            elif layer < self.num_layers:  # len(hidden_dims)
+                fc_layer, cache = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W],
+                                                                         self.params[param_name_b])
+                caches.append(cache)
+
+            # Entre la dernière couche cachée et la couche de sortie
+            else:
+                scores, cache = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                caches.append(cache)
+
+
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
