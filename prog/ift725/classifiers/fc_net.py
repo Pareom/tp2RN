@@ -95,10 +95,10 @@ class TwoLayerNeuralNet(object):
         ############################################################################
 
         # propagation avant pour la premiere couche fully connected
-        fc_layer_1, self.params["cache_layer_1"] = forward_fully_connected_transform_relu(X, self.params['W1'], self.params['b1'])
+        fc_layer_1, cacheLayer1 = forward_fully_connected_transform_relu(X, self.params['W1'], self.params['b1'])
 
         # propagation avant pour la seconde couche fully connected
-        scores, self.params["cache_layer_2"] = forward_fully_connected_transform_relu(fc_layer_1, self.params['W2'], self.params['b2'])
+        scores, cacheLayer2 = forward_fully_connected_transform_relu(fc_layer_1, self.params['W2'], self.params['b2'])
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
@@ -140,10 +140,10 @@ class TwoLayerNeuralNet(object):
                             + np.linalg.norm(self.params["b1"]) ** 2)
 
         # 2. Rétro-progagation le gradient à travers le 2e couche pleinement connectée
-        fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected_transform_relu(dscores, self.params["cache_layer_2"])
+        fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected_transform_relu(dscores, cacheLayer2)
 
         # 3. Rétro-progagation le gradient à travers le 1ere couche pleinement connectée
-        fc_layer_1, grads['W1'], grads['b1'] = backward_fully_connected_transform_relu(fc_layer_2, self.params["cache_layer_1"])
+        fc_layer_1, grads['W1'], grads['b1'] = backward_fully_connected_transform_relu(fc_layer_2, cacheLayer1)
 
         # 4. Ajout de la régularisation L2 aux paramètres
         grads["W2"] += self.reg * 2 * self.params["W2"]
