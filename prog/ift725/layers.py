@@ -2,7 +2,7 @@
 # Version finale rédigée par Carl Lemaire, Vincent Ducharme et Pierre-Marc Jodoin
 
 import numpy as np
-from ift725.blocks import *
+
 
 
 def forward_fully_connected(x, w, b):
@@ -35,7 +35,7 @@ def forward_fully_connected(x, w, b):
     # Vous devrez reformer les entrées en lignes.                               #
     #############################################################################
     inlineX = np.array([a.flatten() for a in x])
-    out = inlineX@w+b
+    out = inlineX @ w + b
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -395,6 +395,29 @@ def forward_convolutional_naive(x, w, b, conv_param, verbose=0):
     # Astuces: vous pouvez utiliser la fonction np.pad pour le remplissage.     #
     #############################################################################
 
+    N, C, H, W = x.shape
+    F, _, HH, WW = w.shape
+
+    pad, stride = conv_param['pad'], conv_param['stride']
+    n_H = 1 + (H + 2 * pad - HH) // stride #/
+    n_W = 1 + (W + 2 * pad - WW) // stride #/
+
+    out = np.zeros((N, F, n_H, n_W))
+
+    pad_width = ((0, 0), (0, 0), (pad, pad), (pad, pad))
+
+    x_pad = np.pad(x, pad_width, 'constant', constant_values = 0)
+
+    for image in range(N):  # Pour chaque image
+        for filtre in range(F):  # Pour chaque filtre
+            for j in range(n_H): #Bouclage sur l'axe vertical (h) de la sortie
+                for k in range(n_W): #Bouclage sur l'axe horizontal (w) de la sortie
+                    out[image, filtre, j, k] = np.sum(
+                    x_pad[image, :, j * stride: HH + j * stride, k * stride: WW + k * stride] * w[filtre]) + b[filtre]
+
+    cache = (x, w, b, conv_param)
+
+    return out, cache
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
@@ -421,6 +444,31 @@ def backward_convolutional_naive(dout, cache):
     #############################################################################
     # TODO: Implémentez la rétropropagation pour la couche de convolution       #
     #############################################################################
+
+    x, w, b, conv_param = cache
+    pad = conv_param['pad']
+    stride = conv_param['stride']
+    F, C, HH, WW = w.shape
+    N, C, H, W = x.shape
+    N, F, new_H, new_W = dout.shape
+
+    padded_x = np.lib.pad(x, ((0, 0), (0, 0), (pad, pad), (pad, pad)), mode='constant', constant_values=0)
+    padded_dx = np.zeros_like(padded_x)
+    dw = np.zeros_like(w)
+    db = np.zeros_like(b)
+
+    for n in range(N):
+        for f in range(F):  #filter
+            for j in range(new_W):
+                for i in range(new_H):
+                    db[f] += dout[n, f, i, j]
+                    dw[f] += padded_x[n, :, i * stride:HH + i * stride, j * stride:WW + j * stride] * dout[n, f, i, j]
+                    padded_dx[n, :, i * stride:i * stride + HH, j * stride:j * stride + WW] += w[f] * dout[n, f, i, j]
+
+    dx = padded_dx[:, :, pad:pad + H, pad:pad + W]
+
+
+
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
@@ -451,7 +499,7 @@ def forward_max_pooling_naive(x, pool_param):
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
-    cache = None
+
     return out, cache
 
 
@@ -561,6 +609,7 @@ def svm_loss(x, y):
     hinge = np.maximum(0, 1 + x.T - x[np.arange(N), y]).T
     hinge[np.arange(len(y)), y] = 0
     loss = np.sum(hinge)
+    loss /= N
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -569,7 +618,7 @@ def svm_loss(x, y):
     dx = np.zeros_like(x)
     dx[margins > 0] = 1
     dx[np.arange(N), y] -= num_pos
-    dx /= 1#N  Etrange...
+    dx /= N
     return loss, dx
 
 
@@ -595,6 +644,7 @@ def softmax_loss(x, y, scale=1.0):
     probs = np.exp(x)
     probs = probs/np.sum(probs, axis=1, keepdims=True)
     loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(y)
+
     #dx = probs@x/len(x)
 
     #############################################################################

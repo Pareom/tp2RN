@@ -1,9 +1,11 @@
 # Code adapté de projets académiques de la professeur Fei Fei Li et de ses étudiants Andrej Karpathy, Justin Johnson et autres.
 # Version finale rédigée par Carl Lemaire, Vincent Ducharme et Pierre-Marc Jodoin
 
+
 import numpy as np
 
 from ..layers import *
+from ..layer_combo import *
 
 class TwoLayerNeuralNet(object):
     """
@@ -52,10 +54,10 @@ class TwoLayerNeuralNet(object):
         # self.params['b1'] = ...                                                  #
         # ...                                                                      #
         ############################################################################
-        self.params['b1']=np.zeros(hidden_dim)
-        self.params['b2']=np.zeros(num_classes)
-        self.params['W1']=np.random.normal(0, weight_scale, (input_dim,hidden_dim))
-        self.params['W2']=np.random.normal(0, weight_scale, (hidden_dim, num_classes))
+        self.params['W1'] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dim))
+        self.params['b1'] = np.zeros(hidden_dim)
+        self.params['W2'] = np.random.normal(scale=weight_scale, size=(hidden_dim, num_classes))
+        self.params['b2'] = np.zeros(num_classes)
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -91,9 +93,18 @@ class TwoLayerNeuralNet(object):
         #  deux couches.                                                           #
         #  NOTES: score est la sortie du réseau *SANS SOFTMAX*                     #
         ############################################################################
-        a, fc_cache = forward_fully_connected(X, self.params['W1'], self.params['b1'])
-        out, relu_cache = forward_relu(a)
-        scores, fc_cache2 = forward_fully_connected(a, self.params['W2'], self.params['b2'])
+        # Initialisation du tableau servant à conserver les caches des deux couches
+        caches = []
+
+        # propagation avant pour la premiere couche fully connected
+        fc_layer_1, cache_1 = forward_fully_connected_transform_relu(X, self.params['W1'], self.params['b1'])
+
+        # propagation avant pour la seconde couche fully connected
+        scores, cache_2 = forward_fully_connected_transform_relu(fc_layer_1, self.params['W2'], self.params['b2'])
+
+        #
+        caches.append(cache_1)
+        caches.append(cache_2)
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -125,18 +136,26 @@ class TwoLayerNeuralNet(object):
         # Note, les gradients doivent être stochez dans le dictionnaire `grads`    #
         #       du type grads['W1']=...                                            #
         ############################################################################
-        loss, dx2 = softmax_loss(scores, y)
-        loss += self.reg * (np.linalg.norm(self.params["W2"])**2
-                            + np.linalg.norm(self.params["W1"])**2
-                            + np.linalg.norm(self.params["b2"])**2
-                            + np.linalg.norm(self.params["b1"])**2)
-        dx, grads["W2"], grads["b2"] = backward_fully_connected(dx2, fc_cache2)
-        da = backward_relu(dx, relu_cache)
-        _, grads["W1"], grads["b1"] = backward_fully_connected(da, fc_cache)
+
+        # 1. Calcul de la loss et du gradient du softmax
+        loss, dscores = softmax_loss(scores, y)
+        loss += self.reg * (np.linalg.norm(self.params["W2"]) ** 2
+                            + np.linalg.norm(self.params["W1"]) ** 2
+                            + np.linalg.norm(self.params["b2"]) ** 2
+                            + np.linalg.norm(self.params["b1"]) ** 2)
+
+        # 2. Rétro-progagation le gradient à travers le 2e couche pleinement connectée
+        fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected_transform_relu(dscores, caches[1])
+
+        # 3. Rétro-progagation le gradient à travers le 1ere couche pleinement connectée
+        fc_layer_1, grads['W1'], grads['b1'] = backward_fully_connected_transform_relu(fc_layer_2, caches[0])
+
+        # 4. Ajout de la régularisation L2 aux paramètres
         grads["W2"] += self.reg * 2 * self.params["W2"]
         grads["W1"] += self.reg * 2 * self.params["W1"]
         grads["b2"] += self.reg * 2 * self.params["b2"]
         grads["b1"] += self.reg * 2 * self.params["b1"]
+
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
