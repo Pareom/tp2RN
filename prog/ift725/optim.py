@@ -71,6 +71,10 @@ def sgd_momentum(w, dw, config=None):
     # utiliser et mettre à jour la vitesse v.                                   #
     #############################################################################
 
+    v = config['momentum'] * v + dw
+
+    next_w = w - config['learning_rate'] * v
+
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -106,6 +110,9 @@ def rmsprop(x, dx, config=None):
     # config['cache'] (# Variable "m" dans les notes de cours)                  #
     #############################################################################
 
+    config['cache'] = config['decay_rate'] * config['cache'] + (1 - config['decay_rate']) * np.abs(dx)
+    next_x = x - config['learning_rate'] / (config['cache']+config['epsilon'])*dx
+
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
@@ -138,7 +145,7 @@ def adam(x, dx, config=None):
 
     next_x = None
     config['m'] = config['beta1'] * config['m'] + (1 - config['beta1']) * dx
-    config['v'] = config['beta2'] * config['v'] + (1 - config['beta2']) * (dx ** 2)
+    config['v'] = config['beta2'] * config['v'] + (1 - config['beta2']) * (np.abs(dx) ** 2)
     mb = config['m'] / (1 - config['beta1'] ** config['t'])  # bias correction for the first iterations
     vb = config['v'] / (1 - config['beta2'] ** config['t'])
     next_x = x - config['learning_rate'] * mb / (np.sqrt(vb) + config['epsilon'])
