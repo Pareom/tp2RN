@@ -262,32 +262,6 @@ class FullyConnectedNeuralNet(object):
                 self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes))
                 self.params[param_name_b] = np.zeros(num_classes)
 
-
-
-        for i in range(self.num_layers):
-          if(i == 0):
-            w_size = (input_dim,hidden_dims[0])
-            b_size = hidden_dims[0]
-          
-          elif(i == self.num_layers-1):
-            w_size = (hidden_dims[-1],num_classes)
-            b_size = num_classes
-
-          else:
-            w_size = (hidden_dims[i-1],hidden_dims[i])
-            b_size = hidden_dims[i]
-
-          param_name_W = self.pn('W',i+1)
-          param_name_b = self.pn('b',i+1)                                  
-          self.params[param_name_W] = np.random.normal(0, weight_scale, w_size)
-          self.params[param_name_b] = np.zeros(b_size)          
-
-          # TODO Batch norm
-          # param_name_gamma = self.pn('gamma',i+1)
-          # param_name_beta = self.pn('beta',i+1)
-          # self.params[param_name_gamma] = 1
-          # self.params[param_name_beta] = 0
-          # print(param_name_gamma)
         
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
@@ -356,14 +330,23 @@ class FullyConnectedNeuralNet(object):
             param_name_b = self.pn('b', layer)
             #param_name_gamma = self.pn('gamma', layer)
             #param_name_beta = self.pn('beta', layer)
+            param_name_dropout_cache = self.pn('dropout_cache', layer)
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
+              if self.use_dropout:
+                X, self.caches[param_name_dropout_cache] = forward_inverted_dropout(X, self.dropout_param)
+
+              fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
+                if self.use_dropout:
+                  fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
+
                 fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+
+
 
         scores = fc_layer
 
@@ -398,20 +381,23 @@ class FullyConnectedNeuralNet(object):
 
         # Rétro-progagation le gradient à travers les couches pleinement connectées
         for layer in range(self.num_layers-1, 0, -1):
-
             param_name_cache = self.pn('cache', layer)
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
+            param_name_dropout_cache = self.pn('dropout_cache', layer)
+
 
             loss += self.reg * (np.linalg.norm(self.params[param_name_W]) ** 2 + np.linalg.norm(self.params[param_name_b]) ** 2)
 
             if layer == self.num_layers-1:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.caches[param_name_cache])
+              fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.caches[param_name_cache])
 
             #Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
-
+              fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+              
+            if self.use_dropout:
+              fc_layer = backward_inverted_dropout(fc_layer, self.caches[param_name_dropout_cache])  
 
             # Ajout de la régularisation L2 aux paramètres
             grads[param_name_W] += self.reg * 2 * self.params[param_name_W]
