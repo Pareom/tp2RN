@@ -641,8 +641,11 @@ def softmax_loss(x, y, scale=1.0):
     # TODO: La perte softmax en vous inspirant du tp1 mais sans régularisation  #
     #                                                                           #
     #############################################################################
-    probs = np.exp(x)
-    probs = probs/np.sum(probs, axis=1, keepdims=True)
+    b = x.max(axis=1)#https://timvieira.github.io/blog/post/2014/02/11/exp-normalize-trick/
+    c = np.exp(x.T - b.T).T
+    probs = c / np.sum(c, axis=1, keepdims=True)
+    #probs = np.exp(x)
+    #probs = probs/np.sum(probs, axis=1, keepdims=True)
     loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(y)
 
     #dx = probs@x/len(x)
