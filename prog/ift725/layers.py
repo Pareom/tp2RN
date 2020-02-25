@@ -396,7 +396,7 @@ def forward_convolutional_naive(x, w, b, conv_param, verbose=0):
     #############################################################################
 
     N, C, H, W = x.shape
-    F, _, HH, WW = w.shape
+    F, C, HH, WW = w.shape
 
     pad, stride = conv_param['pad'], conv_param['stride']
 
@@ -410,13 +410,13 @@ def forward_convolutional_naive(x, w, b, conv_param, verbose=0):
     padded_x = np.pad(x, pad_width, 'constant', constant_values = 0)
 
     #Convolution
-    for image in range(N):  # Pour chaque image
-        for filtre in range(F):  # Pour chaque filtre
+    for image in range(N):
+        for f in range(F):
             for height in range(H_out): #Bouclage sur l'axe vertical (h) de la sortie
                 for width in range(W_out): #Bouclage sur l'axe horizontal (w) de la sortie
-                    out[image, filtre, height, width] = np.sum(
-                    padded_x[image, :, height * stride: HH + height * stride, width * stride: WW + width * stride] * w[filtre])\
-                    + b[filtre]
+                    out[image, f, height, width] = np.sum(
+                    padded_x[image, :, height * stride: HH + height * stride, width * stride: WW + width * stride] * w[f])\
+                    + b[f]
 
     cache = (x, w, b, conv_param)
 
@@ -465,15 +465,15 @@ def backward_convolutional_naive(dout, cache):
     padded_dx = np.zeros_like(padded_x)
 
     # Convolution
-    for image in range(N):  # Pour chaque image
-        for filtre in range(F):  # Pour chaque filtre
+    for image in range(N):
+        for f in range(F):
             for height in range(H_out):  # Bouclage sur l'axe vertical (h) de la sortie
                 for width in range(W_out):  # Bouclage sur l'axe horizontal (w) de la sortie
 
-                    db[filtre] += dout[image, filtre, height, width]
-                    dw[filtre] += padded_x[image, :, height * stride:HH + height * stride, width * stride:WW + width * stride] * dout[image, filtre, height, width]
+                    db[filtre] += dout[image, f, height, width]
+                    dw[filtre] += padded_x[image, :, height * stride:HH + height * stride, width * stride:WW + width * stride] * dout[image, f, height, width]
 
-                    padded_dx[image, :, height * stride:height * stride + HH, width * stride:width * stride + WW] += w[filtre] * dout[image, filtre, height, width]
+                    padded_dx[image, :, height * stride:height * stride + HH, width * stride:width * stride + WW] += w[filtre] * dout[image, f, height, width]
 
     dx = padded_dx[:, :, pad:pad + H, pad:pad + W]
 
@@ -554,13 +554,13 @@ def backward_max_pooling_naive(dout, cache):
     W_out = (W - WW) // stride + 1
     dx = np.zeros_like(x)
 
-
     for height in range(H_out):
         for width in range(W_out):
             height_stride = height * stride
             width_stride = width * stride
             mask = x[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW]
             x_max = np.max(mask)
+
             dx[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW] = dout[:, :, height, width] * (x_max == mask)
 
     #############################################################################
@@ -685,15 +685,9 @@ def softmax_loss(x, y, scale=1.0):
     # TODO: La perte softmax en vous inspirant du tp1 mais sans régularisation  #
     #                                                                           #
     #############################################################################
-    b = x.max(axis=1)#https://timvieira.github.io/blog/post/2014/02/11/exp-normalize-trick/
-    c = np.exp(x.T - b.T).T
-    probs = c / np.sum(c, axis=1, keepdims=True)
-    """print("<....")
-    print(np.sum(c, axis=1, keepdims=True))
-    print("....>")"""
-    #probs = np.exp(x)
-    #probs = probs/np.sum(probs, axis=1, keepdims=True)
-    loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/(len(y))
+    probs = np.exp(x)
+    probs = probs/np.sum(probs, axis=1, keepdims=True)
+    loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(y)
 
     #dx = probs@x/len(x)
 
