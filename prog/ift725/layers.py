@@ -399,23 +399,27 @@ def forward_convolutional_naive(x, w, b, conv_param, verbose=0):
     F, _, HH, WW = w.shape
 
     pad, stride = conv_param['pad'], conv_param['stride']
-    n_H = 1 + (H + 2 * pad - HH) // stride #/
-    n_W = 1 + (W + 2 * pad - WW) // stride #/
 
-    out = np.zeros((N, F, n_H, n_W))
+    H_out = 1 + (H + 2 * pad - HH) // stride
+    W_out = 1 + (W + 2 * pad - WW) // stride
 
+    out = np.zeros((N, F, H_out, W_out))
+
+    #Padding
     pad_width = ((0, 0), (0, 0), (pad, pad), (pad, pad))
+    padded_x = np.pad(x, pad_width, 'constant', constant_values = 0)
 
-    x_pad = np.pad(x, pad_width, 'constant', constant_values = 0)
-
+    #Convolution
     for image in range(N):  # Pour chaque image
         for filtre in range(F):  # Pour chaque filtre
-            for j in range(n_H): #Bouclage sur l'axe vertical (h) de la sortie
-                for k in range(n_W): #Bouclage sur l'axe horizontal (w) de la sortie
-                    out[image, filtre, j, k] = np.sum(
-                    x_pad[image, :, j * stride: HH + j * stride, k * stride: WW + k * stride] * w[filtre]) + b[filtre]
+            for height in range(H_out): #Bouclage sur l'axe vertical (h) de la sortie
+                for width in range(W_out): #Bouclage sur l'axe horizontal (w) de la sortie
+                    out[image, filtre, height, width] = np.sum(
+                    padded_x[image, :, height * stride: HH + height * stride, width * stride: WW + width * stride] * w[filtre])\
+                    + b[filtre]
 
     cache = (x, w, b, conv_param)
+
 
     return out, cache
 
@@ -446,29 +450,32 @@ def backward_convolutional_naive(dout, cache):
     #############################################################################
 
     x, w, b, conv_param = cache
-    pad = conv_param['pad']
-    stride = conv_param['stride']
-    F, C, HH, WW = w.shape
+    dw, db = np.zeros_like(w), np.zeros_like(b)
+
     N, C, H, W = x.shape
-    N, F, new_H, new_W = dout.shape
+    F, C, HH, WW = w.shape
 
-    padded_x = np.lib.pad(x, ((0, 0), (0, 0), (pad, pad), (pad, pad)), mode='constant', constant_values=0)
+    N, F, H_out, W_out = dout.shape
+
+    # Padding
+    pad, stride = conv_param['pad'], conv_param['stride']
+    pad_width = ((0, 0), (0, 0), (pad, pad), (pad, pad))
+    padded_x = np.pad(x, pad_width, mode='constant', constant_values=0)
+
     padded_dx = np.zeros_like(padded_x)
-    dw = np.zeros_like(w)
-    db = np.zeros_like(b)
 
-    for n in range(N):
-        for f in range(F):  #filter
-            for j in range(new_W):
-                for i in range(new_H):
-                    db[f] += dout[n, f, i, j]
-                    dw[f] += padded_x[n, :, i * stride:HH + i * stride, j * stride:WW + j * stride] * dout[n, f, i, j]
-                    padded_dx[n, :, i * stride:i * stride + HH, j * stride:j * stride + WW] += w[f] * dout[n, f, i, j]
+    # Convolution
+    for image in range(N):  # Pour chaque image
+        for filtre in range(F):  # Pour chaque filtre
+            for height in range(H_out):  # Bouclage sur l'axe vertical (h) de la sortie
+                for width in range(W_out):  # Bouclage sur l'axe horizontal (w) de la sortie
+
+                    db[filtre] += dout[image, filtre, height, width]
+                    dw[filtre] += padded_x[image, :, height * stride:HH + height * stride, width * stride:WW + width * stride] * dout[image, filtre, height, width]
+
+                    padded_dx[image, :, height * stride:height * stride + HH, width * stride:width * stride + WW] += w[filtre] * dout[image, filtre, height, width]
 
     dx = padded_dx[:, :, pad:pad + H, pad:pad + W]
-
-
-
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
@@ -493,8 +500,29 @@ def forward_max_pooling_naive(x, pool_param):
     """
     out = None
     #############################################################################
+    #############################################################################
     # TODO: Implémentez la propagation pour une couche de de max pooling        #
     #############################################################################
+
+    N, C, H, W = x.shape
+
+    pool_height = pool_param['pool_height']
+    pool_width = pool_param['pool_width']
+    stride = pool_param['stride']
+
+    H_out = (H - pool_height) // stride + 1
+    W_out = (W - pool_width) // stride + 1
+
+    out = np.zeros((N, C, H_out, W_out))
+
+    # Pooling
+    for height in range(H_out):
+        for width in range(W_out):
+            height_stride = height * stride
+            width_stride = width * stride
+            out[:, :, height, width] = np.max(x[:, :, height_stride:height_stride + pool_height, width_stride: width_stride + pool_width], axis=(2, 3))
+
+    cache = (x, pool_param)
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
@@ -518,6 +546,22 @@ def backward_max_pooling_naive(dout, cache):
     #############################################################################
     # TODO: Implémentez la rétropropagation pour une couche de max pooling.     #
     #############################################################################
+
+    x, pool_param = cache
+    N, C, H, W = x.shape
+    HH, WW, stride = pool_param['pool_height'], pool_param['pool_width'], pool_param['stride']
+    H_out = (H - HH) // stride + 1
+    W_out = (W - WW) // stride + 1
+    dx = np.zeros_like(x)
+
+
+    for height in range(H_out):
+        for width in range(W_out):
+            height_stride = height * stride
+            width_stride = width * stride
+            mask = x[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW]
+            x_max = np.max(mask)
+            dx[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW] = dout[:, :, height, width] * (x_max == mask)
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
