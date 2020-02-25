@@ -37,6 +37,7 @@ class TwoLayerNeuralNet(object):
           initialization of the weights.
         - reg: Scalar giving L2 regularization strength.
         """
+
         self.params = {}
         self.caches = {}
         self.reg = reg

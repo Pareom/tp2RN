@@ -97,6 +97,7 @@ def rmsprop(x, dx, config=None):
     config.setdefault('epsilon', 1e-8)
     config.setdefault('cache', np.zeros_like(x)) # Variable "m" dans les notes
 
+
     next_x = None
     #############################################################################
     # TODO: Implémentez la formule de mise à jour à l'aide de RMSprop et stockez#
