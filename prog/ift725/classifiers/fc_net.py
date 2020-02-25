@@ -37,6 +37,7 @@ class TwoLayerNeuralNet(object):
           initialization of the weights.
         - reg: Scalar giving L2 regularization strength.
         """
+
         self.params = {}
         self.caches = {}
         self.reg = reg
@@ -238,29 +239,29 @@ class FullyConnectedNeuralNet(object):
             #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
             # et les décalages beta
             if self.use_batchnorm:
-                self.params[param_name_beta] = np.ones(hidden_dims[layer-1])
-                self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1])
+                self.params[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
+                self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
 
-                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer-1]))
-                self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer-1])).astype(dtype=dtype)
+                self.params[param_name_b] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
 
             # # Entre chaques couches cachées
             elif layer < self.num_layers:  # len(hidden_dims)
 
                 self.params[param_name_W] = np.random.normal(scale=weight_scale,
-                                                             size=(hidden_dims[layer-2], hidden_dims[layer-1]))
-                self.params[param_name_b] = np.zeros(hidden_dims[layer-1])
+                                                             size=(hidden_dims[layer-2], hidden_dims[layer-1])).astype(dtype=dtype)
+                self.params[param_name_b] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
 
-                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes))
-                self.params[param_name_b] = np.zeros(num_classes)
+                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes)).astype(dtype=dtype)
+                self.params[param_name_b] = np.zeros(num_classes).astype(dtype=dtype)
 
         
         ############################################################################
