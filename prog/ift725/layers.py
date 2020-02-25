@@ -360,8 +360,6 @@ def backward_inverted_dropout(dout, cache):
     #  le dropout inversé (inverted dropout).                                 #
     ###########################################################################
     if mode == 'train':
-        # print(dout.shape)
-        # print(mask.shape)
         dx = dout * mask
     elif mode == 'test':
         dx = dout
