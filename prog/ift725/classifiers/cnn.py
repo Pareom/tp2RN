@@ -53,7 +53,13 @@ class ThreeLayerConvolutionalNet(object):
         # utilisez les clés 'W3' et 'b3' pour les poids et les biais de la couche  #
         # affine de sortie.                                                        #
         ############################################################################
-
+        self.params['W1'] = np.random.normal(scale=weight_scale, size=input_dim).astype(dtype=dtype)
+        self.params['W2'] = np.random.normal(scale=weight_scale, size=hidden_dim).astype(dtype=dtype)
+        self.params['W3'] = np.random.normal(scale=weight_scale, size=num_classes).astype(dtype=dtype)
+        
+        self.params['b1'] = np.zeros(input_dim).astype(dtype=dtype)
+        self.params['b2'] = np.zeros(hidden_dim).astype(dtype=dtype)
+        self.params['b3'] = np.zeros(num_classes).astype(dtype=dtype)
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
@@ -89,7 +95,12 @@ class ThreeLayerConvolutionalNet(object):
         #  couches, calculant les scores de classes pour X et stockez-les dans la  #
         #  variable scores.                                                        #
         ############################################################################
+        print(W1.shape)
+        layer1_out, layer1_cache = forward_convolutional_relu_pool(X, W1, b1, conv_param, pool_param)
+        # layer2_out, layer2_cache = forward_convolutional_relu_pool(layer1_out, W2, b2, conv_param, pool_param)
+        # layer1_out, layer1_cache = forward_convolutional_relu_pool(X, W1, b1, conv_param, pool_param)
 
+        print("ok")
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
