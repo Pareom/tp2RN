@@ -110,8 +110,9 @@ def rmsprop(x, dx, config=None):
     # config['cache'] (# Variable "m" dans les notes de cours)                  #
     #############################################################################
 
-    config['cache'] = config['decay_rate'] * config['cache'] + (1 - config['decay_rate']) * np.abs(dx)
-    next_x = x - config['learning_rate'] / (config['cache']+config['epsilon'])*dx
+
+    config['cache'] = config['decay_rate'] * config['cache'] + (1 - config['decay_rate']) * np.absolute(dx)
+    next_x = x - (config['learning_rate']*dx) / (config['cache']+config['epsilon'])
 
     #############################################################################
     #                             FIN DE VOTRE CODE                             #

@@ -405,18 +405,19 @@ def forward_convolutional_naive(x, w, b, conv_param, verbose=0):
 
     out = np.zeros((N, F, H_out, W_out))
 
-    #Padding
+
     pad_width = ((0, 0), (0, 0), (pad, pad), (pad, pad))
     padded_x = np.pad(x, pad_width, 'constant', constant_values = 0)
 
-    #Convolution
+
     for image in range(N):
-        for f in range(F):
-            for height in range(H_out): #Bouclage sur l'axe vertical (h) de la sortie
-                for width in range(W_out): #Bouclage sur l'axe horizontal (w) de la sortie
-                    out[image, f, height, width] = np.sum(
-                    padded_x[image, :, height * stride: HH + height * stride, width * stride: WW + width * stride] * w[f])\
-                    + b[f]
+        for filtre in range(F):
+            for height in range(H_out):
+                for width in range(W_out):
+                    height_stride = height * stride
+                    width_stride = width * stride
+                    out[image, filtre, height, width] = np.sum(
+                    padded_x[image, :, height_stride: height_stride + HH, width_stride: width_stride + WW] * w[filtre])+ b[filtre]
 
     cache = (x, w, b, conv_param)
 
@@ -457,23 +458,24 @@ def backward_convolutional_naive(dout, cache):
 
     N, F, H_out, W_out = dout.shape
 
-    # Padding
+
     pad, stride = conv_param['pad'], conv_param['stride']
     pad_width = ((0, 0), (0, 0), (pad, pad), (pad, pad))
     padded_x = np.pad(x, pad_width, mode='constant', constant_values=0)
 
     padded_dx = np.zeros_like(padded_x)
 
-    # Convolution
+
     for image in range(N):
-        for f in range(F):
-            for height in range(H_out):  # Bouclage sur l'axe vertical (h) de la sortie
-                for width in range(W_out):  # Bouclage sur l'axe horizontal (w) de la sortie
+        for filtre in range(F):
+            for height in range(H_out):
+                for width in range(W_out):
+                    height_stride = height * stride
+                    width_stride = width * stride
+                    db[filtre] += dout[image, filtre, height, width]
+                    dw[filtre] += padded_x[image, :,height_stride:height_stride+HH, width_stride:width_stride + WW] * dout[image, filtre, height, width]
 
-                    db[filtre] += dout[image, f, height, width]
-                    dw[filtre] += padded_x[image, :, height * stride:HH + height * stride, width * stride:WW + width * stride] * dout[image, f, height, width]
-
-                    padded_dx[image, :, height * stride:height * stride + HH, width * stride:width * stride + WW] += w[filtre] * dout[image, f, height, width]
+                    padded_dx[image, :, height_stride:height_stride + HH, width_stride:width_stride + WW] += w[filtre] * dout[image, filtre, height, width]
 
     dx = padded_dx[:, :, pad:pad + H, pad:pad + W]
 
@@ -516,11 +518,14 @@ def forward_max_pooling_naive(x, pool_param):
     out = np.zeros((N, C, H_out, W_out))
 
     # Pooling
-    for height in range(H_out):
-        for width in range(W_out):
-            height_stride = height * stride
-            width_stride = width * stride
-            out[:, :, height, width] = np.max(x[:, :, height_stride:height_stride + pool_height, width_stride: width_stride + pool_width], axis=(2, 3))
+    for image in range(N):
+        for c in range(C):
+            for height in range(H_out):
+                for width in range(W_out):
+                    height_stride = height * stride
+                    width_stride = width * stride
+                    out[image, c, height, width] = np.max(
+                        x[image, c, height_stride:height_stride + pool_height, width_stride: width_stride + pool_width])
 
     cache = (x, pool_param)
 
@@ -554,15 +559,16 @@ def backward_max_pooling_naive(dout, cache):
     W_out = (W - WW) // stride + 1
     dx = np.zeros_like(x)
 
-    for height in range(H_out):
-        for width in range(W_out):
-            height_stride = height * stride
-            width_stride = width * stride
-            mask = x[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW]
-            x_max = np.max(mask)
-
-            dx[:, :, height_stride: height_stride + HH, width_stride: width_stride + WW] = dout[:, :, height, width] * (x_max == mask)
-
+    for image in range(N):
+        for c in range(C):
+            for height in range(H_out):
+                for width in range(W_out):
+                    height_stride = height * stride
+                    width_stride = width * stride
+                    window = x[image, c, height_stride: height_stride + HH, width_stride: width_stride + WW]
+                    mask = np.max(window) == window
+                    dx[image, c, height_stride: height_stride + HH, width_stride: width_stride + WW] = dout[
+                                         image, c, height, width] * mask
     #############################################################################
     #                             FIN DE VOTRE CODE                             #
     #############################################################################
