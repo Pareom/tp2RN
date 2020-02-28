@@ -327,9 +327,13 @@ def forward_inverted_dropout(x, dropout_param):
     #        en mode 'train'.  https://deepnotes.io/dropout
     ###########################################################################
     if mode == 'train':
-        cache = None
+        mask = np.random.binomial(1, p, size=x.shape) / p
+        out = x * mask
+
     elif mode == 'test':
-        cache = None
+        out = x
+
+    cache = (dropout_param, mask)
 
     ###########################################################################
     #                            FIN DE VOTRE CODE                            #
@@ -355,7 +359,7 @@ def backward_inverted_dropout(dout, cache):
     #  le dropout inversé (inverted dropout).                                 #
     ###########################################################################
     if mode == 'train':
-        dx = None
+        dx = dout * mask
     elif mode == 'test':
         dx = dout
 
