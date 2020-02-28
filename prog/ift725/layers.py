@@ -234,6 +234,7 @@ def backward_batch_normalization(dout, cache):
     """
     dx, dgamma, dbeta = None, None, None
     N, D = dout.shape
+    print(cache['gamma'])
     gamma = cache['gamma']
     inv_sqrt_var = cache['inv_sqrt_var']
 

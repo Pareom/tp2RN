@@ -179,6 +179,7 @@ class FullyConnectedNeuralNet(object):
     def __init__(self, hidden_dims, input_dim=3 * 32 * 32, num_classes=10,
                  dropout=0, use_batchnorm=False, reg=0.0,
                  weight_scale=1e-2, dtype=np.float32, seed=None):
+
         """
         Initialize a new FullyConnectedNet.
 
@@ -199,6 +200,7 @@ class FullyConnectedNeuralNet(object):
           will make the dropout layers deteriminstic so we can gradient check the
           model.
         """
+
         self.use_batchnorm = use_batchnorm
         self.use_dropout = dropout > 0
         self.reg = reg
@@ -230,56 +232,41 @@ class FullyConnectedNeuralNet(object):
         #           self.params[param_name_b] = ...                                #
         ############################################################################
 
-        print("INITIALISATION")
+
         for layer in range(1, self.num_layers):
 
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
             param_name_gamma = self.pn('gamma', layer)
             param_name_beta = self.pn('beta', layer)
-            print("para name W :", param_name_W)
+
             #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
             # et les décalages beta
-            if self.use_batchnorm:
-                self.params[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
-                self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
-
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-                print("init premiere couche")
+
                 self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(input_dim, hidden_dims[layer-1])).astype(dtype=dtype)
                 self.params[param_name_b] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
+                if self.use_batchnorm:
+                    self.params[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
+                    self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
-
-
-            # # Entre chaque couches cachées
+            # # Entre chaques couches cachées
             elif layer < self.num_layers:  # len(hidden_dims)
-                print("init couche cachée")
 
                 self.params[param_name_W] = np.random.normal(scale=weight_scale,
                                                              size=(hidden_dims[layer-2], hidden_dims[layer-1])).astype(dtype=dtype)
                 self.params[param_name_b] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
+                if self.use_batchnorm:
+                    self.params[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
+                    self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
-            print("W hidden layer shape", self.params[param_name_W].shape)
-            print("B hidden layer shape", self.params[param_name_W].shape)
-            """
             # Entre la dernière couche cachée et la couche de sortie
             else:
-                print("init derniere couche")
+
                 self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes)).astype(dtype=dtype)
                 self.params[param_name_b] = np.zeros(num_classes).astype(dtype=dtype)
-            """
-        layer += 1
-        # Entre la dernière couche cachée et la couche de sortie
-        print("init derniere couche, layer :", layer)
-        param_name_W = self.pn('W', layer)
-        param_name_b = self.pn('b', layer)
-        print("para name W :", param_name_W)
-        self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer - 2], num_classes)).astype(dtype=dtype)
-        self.params[param_name_b] = np.zeros(hidden_dims[layer - 2]).astype(dtype=dtype)
 
-        print("W output layer shape", self.params[param_name_W].shape)
-        print("B output layer shape", self.params[param_name_W].shape)
 
 
         ############################################################################
@@ -311,7 +298,10 @@ class FullyConnectedNeuralNet(object):
             else:
                 self.params[k] = v.astype(dtype)
 
+        print("initialisation terminee")
+
     def loss(self, X, y=None):
+
         """
         Compute loss and gradient for the fully-connected net.
 
@@ -342,88 +332,35 @@ class FullyConnectedNeuralNet(object):
         # normalisation par lots; passer self.bn_params[1] pour la propagation de  #
         # la deuxième couche de normalisation par lots, etc.                       #
         ############################################################################
-
-        print("PROPAGATION AVANT")
-
-        def forward_fully_connected_batch_norm_transform_relu(x, w, b, gamma, beta, bn):
-
-            print("X shape :", x.shape)
-            print("W shape :", w.shape)
-            print("B shape :", b.shape)
-            """
-            x la sortie de la couche précédante
-            forward fully connected sur x -> a
-            batch normalization de a -> fc_batch_normalized
-            forward_relu de a_norm
-            et renvoie des caches respectifs (FC - batch norme - relu)
-            """
-            a, fc_cache = forward_fully_connected(x, w, b)
-            print("shape gamma")
-            print(gamma.shape)
-            print("shape beta")
-            print(beta.shape)
-            fc_batch_normalized, fc_bn_cache = forward_batch_normalization(a, gamma, beta, bn)
-            out, relu_cache = forward_relu(fc_batch_normalized)
-            cache = (fc_cache, fc_bn_cache, relu_cache)
-
-            return out, cache
-
         for layer in range(1, self.num_layers):
-            print("layer : ", layer)
             param_name_cache = self.pn('cache', layer)
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
             param_name_gamma = self.pn('gamma', layer)
             param_name_beta = self.pn('beta', layer)
-            """
-            # Entre la couche d'entrée et la premiere couche cachée : fully connected into batch norm into relu
-            #pas de batch norm sur les entrées
+
+            # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-                print('1ere couche')
-                #out_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[
-                #    param_name_W], self.params[param_name_b])
-                bn = self.bn_params[layer - 1]
-                w = self.params[param_name_W]
-                b = self.params[param_name_b]
-                gamma = self.params[param_name_gamma]
-                beta = self.params[param_name_beta]
-                out_layer, self.caches[param_name_cache] = forward_fully_connected_batch_norm_transform_relu(X, w, b, gamma, beta, bn)
-                print('1ere couche OK')
-            """
-            # Entre les couches cachées : propagation avant avec batch norm
-            if layer < self.num_layers:
-                print('couche cachée: ', layer)
-                bn = self.bn_params[layer-1]
-                w = self.params[param_name_W]
-                b = self.params[param_name_b]
-                gamma = self.params[param_name_gamma]
-                beta = self.params[param_name_beta]
-                #out_layer, self.caches[param_name_cache] = forward_fully_connected_batch_norm_transform_relu(out_layer, w, b, gamma, beta, bn)
-                X, self.caches[param_name_cache] = forward_fully_connected_batch_norm_transform_relu(X, w, b, gamma, beta, bn)
-                print('forward_batch_normalization OK')
+                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W],
+                                                                                                 self.params[param_name_b])
+                print("111111111111111111111111111111111")
 
-                print('forward_batch_normalization + RELU OK')
-
-            """
+            # Entre la dernière couche cachée et la couche de sortie
+            # Calcul du batch norm de la sortie des neurones
             else:
-                print('derniere couche')
-                bn = self.bn_params[layer]
-                w = self.params[param_name_W]
-                b = self.params[param_name_b]
-                #scores, self.caches[param_name_cache] = forward_fully_connected_transform_relu(out_layer, self.params[
-                 #   param_name_W], self.params[param_name_b])
-                scores, self.caches[param_name_cache] = forward_fully_connected_batch_norm_transform_relu(out_layer, w, b, bn)
-                print('derniere couche OK')
-            """
-        layer += 1
-        # Entre la dernière couche cachée et la sortie : pas de batch norm
-        print('derniere couche')
-        w = self.params[param_name_W]
-        b = self.params[param_name_b]
-        scores, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W],
-                                                                                       self.params[param_name_b])
+                print("2222222222222222222222222222222")
+                fc_layer, self.caches[param_name_cache] = forward_batch_normalization(fc_layer, self.params[param_name_gamma],
+                                                                                      self.params[param_name_beta], self.bn_params[layer])
+                fc_layer = forward_relu(fc_layer)
+            #else:
+             #   fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W],
+                                                                                               #  self.params[param_name_b])
 
-        print('derniere couche OK')
+        # On passe la sortie du batch norm dans la fonction d'activation Relu
+        scores = forward_relu(fc_layer)
+        print("scores")
+        print(scores)
+
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -448,81 +385,33 @@ class FullyConnectedNeuralNet(object):
         # régularisation L2 inclus un facteur de 0.5 pour simplifier l'expression  #
         # pour le gradient.                                                        #
         ############################################################################
-
-        print("RETROPROPAGATION")
-
-        """
-        def backward_batch_normalization_transform_relu(dout, cache):
-            
-            fc_cache, relu_cache = cache
-            da = backward_relu(dout, relu_cache)
-            dx, dw, db = backward_fully_connected(da, fc_cache)
-            return dx, dw, db
-        def backward_batch_normalization_transform_relu(x, bn):
-
-            fc_batch_normalized, fc_cache = forward_batch_normalization(x, self.params[
-                param_name_gamma], self.params[param_name_beta], bn)
-            out, relu_cache = forward_relu(fc_batch_normalized)
-            cache = (fc_cache, relu_cache)
-
-            return out, cache
-        """
-        print("VERSION_1506")
-
-        def backward_fully_connected_batch_norm_transform_relu(dout, cache):
-            """
-            Backward pass for the FC-batch norm-relu convenience layer
-            """
-            fc_cache, fc_bn_cache, relu_cache = cache
-
-            da = backward_relu(dout, relu_cache)
-            dx, dw, db = backward_fully_connected(da, fc_cache)
-            dx, dgamma, dbeta = backward_batch_normalization(da, fc_bn_cache)
-            return dx, dw, db, dgamma, dbeta
-
         # Calcul de la loss et du gradient du softmax
         loss, dscores = softmax_loss(scores, y)
 
-        print("test tailles des tuples")
-        for layer in range(self.num_layers - 1, 0, -1):
-            param_name_cache = self.pn('cache', layer)
-            taille  = len(self.caches[param_name_cache])
-            print(taille)
-
         # Rétro-progagation le gradient à travers les couches pleinement connectées
-        for layer in range(self.num_layers - 1, 0, -1):
+        for layer in range(self.num_layers-1, 0, -1):
+
             param_name_cache = self.pn('cache', layer)
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
             param_name_gamma = self.pn('gamma', layer)
             param_name_beta = self.pn('beta', layer)
 
-            loss += self.reg * (np.linalg.norm(self.params[param_name_W]) * 2 + np.linalg.norm(self.params[param_name_b]) * 2)
+            loss += self.reg * (np.linalg.norm(self.params[param_name_W]) ** 2 + np.linalg.norm(self.params[param_name_b]) ** 2)
 
-            #entre la sortie et la dernière couche cachée
-            if layer == self.num_layers - 1:
-                """
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores,
-                                                                                                             self.caches[param_name_cache])
-                fc_layer, grads[param_name_gamma], grads[param_name_beta] = backward_batch_normalization(dscores,
-                                                                                                         self.caches[param_name_cache])
-                """
-                fc_layer, grads[param_name_W], grads[param_name_b], grads[param_name_gamma], grads[param_name_beta] =\
-                    backward_fully_connected_batch_norm_transform_relu(dscores, self.caches[param_name_cache])
+            if layer == self.num_layers-1:
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.caches[param_name_cache])
+                fc_layer, grads[param_name_gamma], grads[param_name_beta] = backward_batch_normalization(dscores, self.caches[param_name_cache])
 
-            # Entre la dernière couche cachée et la couche de sortie
-            elif layer > 1:
-                fc_layer, grads[param_name_W], grads[param_name_b], grads[param_name_gamma], grads[param_name_beta] = \
-                    backward_fully_connected_batch_norm_transform_relu(fc_layer, self.caches[param_name_cache])
+            #Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores,
-                                                                                                             self.caches[param_name_cache])
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+                if layer > 0:
+                    fc_layer, grads[param_name_gamma], grads[param_name_beta] = backward_batch_normalization(fc_layer, self.caches[param_name_cache])
 
             # Ajout de la régularisation L2 aux paramètres
             grads[param_name_W] += self.reg * 2 * self.params[param_name_W]
             grads[param_name_b] += self.reg * 2 * self.params[param_name_b]
-            grads[param_name_gamma] += self.params[param_name_gamma]
-            grads[param_name_beta] += self.params[param_name_beta]
 
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
