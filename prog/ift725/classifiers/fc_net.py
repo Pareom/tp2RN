@@ -235,6 +235,7 @@ class FullyConnectedNeuralNet(object):
             param_name_b = self.pn('b', layer)
             param_name_gamma = self.pn('gamma', layer)
             param_name_beta = self.pn('beta', layer)
+            param_name_cacheN = self.pn('cache', layer)
 
             #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
             # et les décalages beta
@@ -331,21 +332,34 @@ class FullyConnectedNeuralNet(object):
             param_name_cache = self.pn('cache', layer)
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
-            #param_name_gamma = self.pn('gamma', layer)
-            #param_name_beta = self.pn('beta', layer)
             param_name_dropout_cache = self.pn('dropout_cache', layer)
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-              fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
-              if self.use_dropout:
+                #fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
+                a, fc_cache = forward_fully_connected(X, self.params[param_name_W], self.params[param_name_b])
+                if self.use_batchnorm:
+                    param_name_gamma = self.pn('gamma', layer)
+                    param_name_beta = self.pn('beta', layer)
+                    param_name_cacheN = self.pn('cache', layer)
+                    a, self.batchParams[param_name_cacheN]= forward_batch_normalization(a, self.batchParams[param_name_gamma], self.batchParams[param_name_beta], self.bn_params[layer-1])
+                fc_layer, relu_cache = forward_relu(a)
+                self.caches[param_name_cache] = (fc_cache, relu_cache)
+                if self.use_dropout:
                 fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                #fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                a, fc_cache = forward_fully_connected(fc_layer, self.params[param_name_W], self.params[param_name_b])
+                if self.use_batchnorm:
+                    param_name_gamma = self.pn('gamma', layer)
+                    param_name_beta = self.pn('beta', layer)
+                    forward_batch_normalization(a, self.batchParams[param_name_gamma], self.batchParams[param_name_beta], self.bn_params[layer-1])
+                fc_layer, relu_cache = forward_relu(a)
+                self.caches[param_name_cache] = (fc_cache, relu_cache)
                 if self.use_dropout:
-                  fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
+                    fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
 
         layer+=1
 
@@ -403,7 +417,15 @@ class FullyConnectedNeuralNet(object):
             else:
                 if self.use_dropout:
                   fc_layer = backward_inverted_dropout(fc_layer, self.caches[param_name_dropout_cache])
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+                #fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+                fc_cache, relu_cache = self.caches[param_name_cache]
+                da = backward_relu(fc_layer, relu_cache)
+                if self.use_batchnorm:
+                    param_name_gamma = self.pn('gamma', layer)
+                    param_name_beta = self.pn('beta', layer)
+                    forward_batch_normalization(a, self.batchParams[param_name_gamma], self.batchParams[param_name_beta], self.bn_params[layer-1])
+                    backward_batch_normalization(dout, cache)
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected(da, fc_cache)
 
 
             # Ajout de la régularisation L2 aux paramètres
