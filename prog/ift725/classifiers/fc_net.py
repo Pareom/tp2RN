@@ -100,8 +100,8 @@ class TwoLayerNeuralNet(object):
         fc_layer_1, cacheLayer1 = forward_fully_connected_transform_relu(X, self.params['W1'], self.params['b1'])
 
         # propagation avant pour la seconde couche fully connected
-        scores, cacheLayer2 = forward_fully_connected_transform_relu(fc_layer_1, self.params['W2'], self.params['b2'])
-
+        #scores, cacheLayer2 = forward_fully_connected_transform_relu(fc_layer_1, self.params['W2'], self.params['b2'])
+        scores, cacheLayer2 = forward_fully_connected(fc_layer_1, self.params['W2'], self.params['b2'])
         ############################################################################
         #                             FIN DE VOTRE CODE                            #
         ############################################################################
@@ -142,7 +142,8 @@ class TwoLayerNeuralNet(object):
                             + np.linalg.norm(self.params["b1"]) ** 2)
 
         # 2. Rétro-progagation le gradient à travers le 2e couche pleinement connectée
-        fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected_transform_relu(dscores, cacheLayer2)
+        #fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected_transform_relu(dscores, cacheLayer2)
+        fc_layer_2, grads['W2'], grads['b2'] = backward_fully_connected(dscores, cacheLayer2)
 
         # 3. Rétro-progagation le gradient à travers le 1ere couche pleinement connectée
         fc_layer_1, grads['W1'], grads['b1'] = backward_fully_connected_transform_relu(fc_layer_2, cacheLayer1)
@@ -206,7 +207,7 @@ class FullyConnectedNeuralNet(object):
         self.dtype = dtype
         self.params = {}
         self.caches = {}
-
+        self.batchParams = {}
         ############################################################################
         # TODO: Initialisez les paramètres du réseau de neuronnes en stockant      #
         #  toutes les valeurs dans le dictionnaire self.params.                    #
@@ -239,8 +240,8 @@ class FullyConnectedNeuralNet(object):
             #Lorsque batch norm est utilisé, On stock les paramètres de mises à l'échelle gamma
             # et les décalages beta
             if self.use_batchnorm:
-                self.params[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
-                self.params[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
+                self.batchParams[param_name_beta] = np.ones(hidden_dims[layer-1]).astype(dtype=dtype)
+                self.batchParams[param_name_gamma] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
