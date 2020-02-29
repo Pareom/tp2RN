@@ -337,17 +337,15 @@ class FullyConnectedNeuralNet(object):
 
             # Entre la couche d'entrée et la premiere couche cachée
             if layer == 1:
-              if self.use_dropout:
-                X, self.caches[param_name_dropout_cache] = forward_inverted_dropout(X, self.dropout_param)
-
               fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(X, self.params[param_name_W], self.params[param_name_b])
+              if self.use_dropout:
+                fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
 
             # Entre la dernière couche cachée et la couche de sortie
             else:
+                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
                 if self.use_dropout:
                   fc_layer, self.caches[param_name_dropout_cache] = forward_inverted_dropout(fc_layer, self.dropout_param)
-
-                fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
 
         layer+=1
 
@@ -403,10 +401,10 @@ class FullyConnectedNeuralNet(object):
 
             #Entre la dernière couche cachée et la couche de sortie
             else:
-                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
-
                 if self.use_dropout:
                   fc_layer = backward_inverted_dropout(fc_layer, self.caches[param_name_dropout_cache])
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+
 
             # Ajout de la régularisation L2 aux paramètres
             grads[param_name_W] += self.reg * 2 * self.params[param_name_W]

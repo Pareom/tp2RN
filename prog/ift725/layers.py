@@ -692,8 +692,12 @@ def softmax_loss(x, y, scale=1.0):
     # TODO: La perte softmax en vous inspirant du tp1 mais sans régularisation  #
     #                                                                           #
     #############################################################################
-    probs = np.exp(x)
-    probs = probs/np.sum(probs, axis=1, keepdims=True)
+    max = np.max(x, axis=1)
+    b = np.exp(x.T - max).T
+    probs = b / np.sum(b, axis=1, keepdims=True)
+    #Probleme overflow
+    #probs = np.exp(x)
+    #probs = probs/np.sum(probs, axis=1, keepdims=True)
     loss = np.sum(-np.log(probs[np.arange(len(y)),y]))/len(y)
 
     #dx = probs@x/len(x)
