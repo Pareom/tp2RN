@@ -231,7 +231,6 @@ class FullyConnectedNeuralNet(object):
         #           self.params[param_name_b] = ...                                #
         ############################################################################
         for layer in range(1, self.num_layers):
-
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
             param_name_gamma = self.pn('gamma', layer)
@@ -258,11 +257,13 @@ class FullyConnectedNeuralNet(object):
                 self.params[param_name_b] = np.zeros(hidden_dims[layer-1]).astype(dtype=dtype)
 
 
-            # Entre la dernière couche cachée et la couche de sortie
-            else:
+        # Entre la dernière couche cachée et la couche de sortie
+        layer+=1
 
-                self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-1], num_classes)).astype(dtype=dtype)
-                self.params[param_name_b] = np.zeros(num_classes).astype(dtype=dtype)
+        param_name_W = self.pn('W', layer)
+        param_name_b = self.pn('b', layer)
+        self.params[param_name_W] = np.random.normal(scale=weight_scale, size=(hidden_dims[layer-2], num_classes)).astype(dtype=dtype)
+        self.params[param_name_b] = np.zeros(num_classes).astype(dtype=dtype)
 
         
         ############################################################################
@@ -348,7 +349,13 @@ class FullyConnectedNeuralNet(object):
 
                 fc_layer, self.caches[param_name_cache] = forward_fully_connected_transform_relu(fc_layer, self.params[param_name_W], self.params[param_name_b])
 
+        layer+=1
 
+        param_name_cache = self.pn('cache', layer)
+        param_name_W = self.pn('W', layer)
+        param_name_b = self.pn('b', layer)
+
+        fc_layer, self.caches[param_name_cache] = forward_fully_connected(fc_layer, self.params[param_name_W], self.params[param_name_b])#Pas de dropout
 
         scores = fc_layer
 
@@ -382,7 +389,7 @@ class FullyConnectedNeuralNet(object):
         loss, dscores = softmax_loss(scores, y)
 
         # Rétro-progagation le gradient à travers les couches pleinement connectées
-        for layer in range(self.num_layers-1, 0, -1):
+        for layer in range(self.num_layers, 0, -1):
             param_name_cache = self.pn('cache', layer)
             param_name_W = self.pn('W', layer)
             param_name_b = self.pn('b', layer)
@@ -391,15 +398,15 @@ class FullyConnectedNeuralNet(object):
 
             loss += self.reg * (np.linalg.norm(self.params[param_name_W]) ** 2 + np.linalg.norm(self.params[param_name_b]) ** 2)
 
-            if layer == self.num_layers-1:
-              fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(dscores, self.caches[param_name_cache])
+            if layer == self.num_layers:
+              fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected(dscores, self.caches[param_name_cache])
 
             #Entre la dernière couche cachée et la couche de sortie
             else:
-              fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
-              
-            if self.use_dropout:
-              fc_layer = backward_inverted_dropout(fc_layer, self.caches[param_name_dropout_cache])  
+                fc_layer, grads[param_name_W], grads[param_name_b] = backward_fully_connected_transform_relu(fc_layer, self.caches[param_name_cache])
+
+                if self.use_dropout:
+                  fc_layer = backward_inverted_dropout(fc_layer, self.caches[param_name_dropout_cache])
 
             # Ajout de la régularisation L2 aux paramètres
             grads[param_name_W] += self.reg * 2 * self.params[param_name_W]
